@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="/common.css" />
+  <style>
+    form { width: 500px; padding: 1em 3em; } 
+    button:nth-of-type(1) { margin-left: 1em; }
+  </style>
+</head>
+<body>
+<div class="container">
+ <form method="post" th:object="${studentEdit}" class="shadow"> 
+    <h1 th:if="${studentEdit.id > 0}">학생 수정</h1>
+    <h1 th:if="${studentEdit.id == 0}">학생 등록</h1>
+    <div class="row">
+      <label>학번:</label>
+      <input type="text" th:field="*{studentNo}" />
+      <div class="error" th:errors="*{studentNo}"></div>
+    </div>
+    <div class="row">
+      <label>이름:</label>
+      <input type="text" th:field="*{name}" />
+      <div class="error" th:errors="*{name}"></div>
+    </div>
+    <div class="row">
+      <label>학과:</label>
+      <select th:field="*{departmentId}">
+        <option value="0">학과를 선택하세요</option>
+        <option th:each="d : ${departments}"
+                th:value="${d.id}" th:text="${d.name}"></option>
+      </select>
+      <div class="error" th:errors="*{departmentId}"></div>
+    </div>
+    <div class="row">
+      <label>성별:</label>
+      <label><input type="radio" th:field="*{sex}" value="남" />남자</label>
+      <label><input type="radio" th:field="*{sex}" value="여" />여자</label>
+      <div class="error" th:errors="*{sex}"></div>
+    </div>
+    <div class="row">
+      <label>전화:</label>
+      <input type="text" th:field="*{phone}" />
+      <div class="error" th:errors="*{phone}"></div>
+    </div>
+    <div class="row">
+      <label>메일:</label>
+      <input type="text" th:field="*{email}" />
+      <div class="error" th:errors="*{email}"></div>
+    </div>
+    <hr />    
+    <button type="submit" class="btn" 
+             name="cmd" value="save">저장</button>
+    <button type="submit" class="btn" 
+             th:if="${ studentEdit.id > 0 }"
+             onclick="return confirm('삭제하시겠습니까?')"
+             name="cmd" value="delete">삭제</button>
+    <a th:href="'list?' + ${pagination.queryString}" class="btn">목록으로</a>
+    <span class="error" th:errors="${studentEdit}"></span>
+  </form>
+</div>
+</body>
+</html>
+
